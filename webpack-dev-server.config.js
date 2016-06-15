@@ -12,17 +12,20 @@ var path = require('path');
 var buildPath = path.resolve(__dirname, 'build');
 var nodeModulesPath = path.resolve(__dirname, 'node_modules');
 var TransferWebpackPlugin = require('transfer-webpack-plugin');
+var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 var config = {
   //Entry points to the project
   entry: [
-    'webpack-dev-server/client?http://localhost:3000',
+    'webpack-dev-server/client?http://localhost:4000',
     'webpack/hot/only-dev-server',
-    path.join(__dirname, '/src/app/app.jsx')
+    path.join(__dirname, '/src/app.jsx'),
+    path.join(__dirname, '/src/sass/init.scss'),
   ],
   //Config options on how to interpret requires imports
   resolve: {
-    extensions: ["", ".js", ".jsx"]
+    extensions: ["", ".js", ".jsx"],
+    modulesDirectories: ['node_modules','src']
     //node_modules: ["web_modules", "node_modules"]  (Default Settings)
   },
   //Server Configuration options
@@ -31,11 +34,11 @@ var config = {
     devtool: 'eval',
     hot: true,        //Live-reload
     inline: true,
-    port: 3000        //Port Number
+    port: 4000        //Port Number
   },
   devtool: 'eval',
   output: {
-    publicPath: "http://127.0.0.1:3000/",
+    publicPath: "http://127.0.0.1:4000/",
     path: buildPath,
     filename: 'app.js'
   },
@@ -47,17 +50,15 @@ var config = {
     new webpack.HotModuleReplacementPlugin(),
     //Allows error warnings but does not stop compiling. Will remove when eslint is added
     new webpack.NoErrorsPlugin(),
-    //Moves files
-    new TransferWebpackPlugin([
-      {from: 'www'}
-    ], path.resolve(__dirname, "src"))
+    new ExtractTextPlugin("style.css")
   ],
   module: {
     //Loaders to interpret non-vanilla javascript code as well as most other extensions including images and text.
     loaders: [
-      {test: /\.css$/, loader: 'style-loader!css-loader!cssnext-loader'},
+      { test: /\.css$/, loader: 'style-loader!css-loader'},
+      { test: /\.scss$/, loader: ExtractTextPlugin.extract("style-loader","css!sass")},
       {
-        //React-hot loader and
+        //React-hot loader
         test: /\.(js|jsx)$/,  //All .js and .jsx files
         loaders: ['react-hot', 'babel'], //react-hot is like browser sync and babel loads jsx and es6-7
         exclude: [nodeModulesPath]
