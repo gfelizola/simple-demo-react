@@ -29,7 +29,8 @@ class CRUDActions extends BaseActions {
         let loadingID = this.loading.defer();
 
         return new Promise((resolve, reject) => {
-            this.resource(id)[method](body)
+            let func = method == 'get' ? id ? this.resource(id) : this.resource : this.resource[method] ;
+            func(body)
                 .then(payload => {
                     clearTimeout(loadingID);
                     resolve(payload);

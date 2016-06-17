@@ -10,5 +10,6 @@ body {
 }
 
 .app-container {
-    padding-top: $space;
+    padding-top: $space * 2;
+    padding-bottom: $space * 2;
 }

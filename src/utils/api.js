@@ -1,6 +1,6 @@
 import Fenix from 'fenixjs';
 
-const url = "https://localhost:3000";
+const url = "http://localhost:3040";
 
 let xAuthToken = "";
 
@@ -22,6 +22,16 @@ const config = {
         }
     },
     products: {
+        methods: '*',
+        options: {
+            requestHeaders: {
+                get "X-AUTH-TOKEN" (){
+                    return xAuthToken;
+                }
+            }
+        }
+    },
+    brands: {
         methods: '*',
         options: {
             requestHeaders: {

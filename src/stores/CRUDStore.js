@@ -32,12 +32,12 @@ class CRUDStore extends BaseStore {
         });
     }
 
-    read(payload) {
+    readed(payload) {
         let entName = this._entName;
         let entNamePlural = this._entNamePlural;
 
-        if( Array.isArray(payload) ) {
-            this[entNamePlural] = payload;
+        if( Array.isArray(payload.data) ) {
+            this[entNamePlural] = _.clone(payload.data);
         } else {
             this[entName] = payload;
         }

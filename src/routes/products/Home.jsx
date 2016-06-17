@@ -1,19 +1,35 @@
-import React from 'react';
+import React          from 'react';
 import { withRouter } from 'react-router';
 
-import Menu from 'components/Menu';
-import Layout from 'components/layout';
+import Layout         from 'components/layout';
+const { Row, Col }    = Layout;
 
 import { Card, CardTitle, FloatingActionButton, Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui';
-import ContentAdd from 'material-ui/svg-icons/content/add';
+import ContentAdd      from 'material-ui/svg-icons/content/add';
 
-const { Row, Col } = Layout;
+import ProductsStore   from 'stores/ProductsStore';
+import ProductsActions from 'actions/ProductsActions';
 
-import api from 'utils/api';
 
 class ProductsHome extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            products: []
+        };
+    }
+
+    componentDidMount = () => {
+        ProductsStore.listen( this.onChange )
+        ProductsActions.read();
+    }
+
+    onChange = store => {
+        if ( store.is( ProductsActions.READ ) ) {
+            this.setState({
+                products: store.products
+            });
+        }
     }
 
     _handleAdd = () => {
@@ -41,26 +57,13 @@ class ProductsHome extends React.Component {
                             displayRowCheckbox={ showCheckboxes }
                             showRowHover={true}
                             >
-                            <TableRow>
-                                <TableRowColumn>1</TableRowColumn>
-                                <TableRowColumn>John Smith</TableRowColumn>
-                                <TableRowColumn>Employed</TableRowColumn>
-                            </TableRow>
-                            <TableRow>
-                                <TableRowColumn>2</TableRowColumn>
-                                <TableRowColumn>Randal White</TableRowColumn>
-                                <TableRowColumn>Unemployed</TableRowColumn>
-                            </TableRow>
-                            <TableRow>
-                                <TableRowColumn>3</TableRowColumn>
-                                <TableRowColumn>Stephanie Sanders</TableRowColumn>
-                                <TableRowColumn>Employed</TableRowColumn>
-                            </TableRow>
-                            <TableRow>
-                                <TableRowColumn>4</TableRowColumn>
-                                <TableRowColumn>Steve Brown</TableRowColumn>
-                                <TableRowColumn>Employed</TableRowColumn>
-                            </TableRow>
+                            { this.state.products.map(( p, i ) => {
+                                return (<TableRow key={i}>
+                                <TableRowColumn>{ p.id }</TableRowColumn>
+                                <TableRowColumn>{ p.name }</TableRowColumn>
+                                <TableRowColumn>{ p.brandId }</TableRowColumn>
+                            </TableRow>)
+                            }) }
                         </TableBody>
                     </Table>
                 </Card>
