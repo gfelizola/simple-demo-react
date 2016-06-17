@@ -6,7 +6,7 @@ class Row extends React.Component {
     }
 
     render() {
-        let rowClass = `row ${this.props.align}`;
+        let rowClass = `row ${this.props.vAlign} ${this.props.hAlign}`;
 
         return (<div className={rowClass}>
             { this.props.children }

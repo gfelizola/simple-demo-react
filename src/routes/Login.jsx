@@ -7,6 +7,8 @@ import { Card, CardTitle, CardText, TextField, RaisedButton } from 'material-ui'
 
 const { Row, Col } = Layout;
 
+import api from 'utils/api';
+
 export default class Login extends React.Component {
     constructor(props) {
         super(props);
@@ -20,11 +22,17 @@ export default class Login extends React.Component {
 
         if ( user.length && pass.length ) {
             //Call API to validate
+
+            api.login({ username: user, password: pass}).then(data => {
+                console.log('Logado', data);
+            }).catch( error => {
+                console.log('Login error', error);
+            })
         }
     }
 
     render() {
-        return (<Row align="center-xs">
+        return (<Row hAlign="center-xs">
             <Col sm={4}>
                 <Card className="start-xs">
                     <CardTitle title="login" />

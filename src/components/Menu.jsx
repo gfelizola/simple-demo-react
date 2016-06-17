@@ -41,6 +41,7 @@ class Menu extends React.Component {
                 onRequestChange={this.handleToggle.bind(this, false)}>
                 <MenuItem onTouchTap={ this.handleMenuItem.bind(this, 'home') }>Home</MenuItem>
                 <MenuItem onTouchTap={ this.handleMenuItem.bind(this, 'login') }>Login</MenuItem>
+                <MenuItem onTouchTap={ this.handleMenuItem.bind(this, 'products') }>Produtos</MenuItem>
             </Drawer>
         </div>)
     }
