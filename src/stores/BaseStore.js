@@ -87,32 +87,8 @@ class BaseStore {
     }
 
     error(err) {
-        if (err.message) {
-
-            if (err.response) {
-
-                // Prevent multiple error handles for same response
-                if (!err.response.isRead) {
-                    err.response.isRead = true;
-                    err.response.json().then(respErr => {
-
-                        let errors = respErr.errors;
-                        if (respErr.errors) {
-                            errors.map(e => this._dispatchError(e));
-                        } else {
-                            err.message = respErr.message ? respErr.message : err.message;
-                            this._dispatchError(err);
-                        }
-                    });
-                }
-
-            } else {
-                this._dispatchError(err);
-            }
-        } else {
-            this._dispatchError({ message: i18n.tr('Ocorreu um erro inesperado') });
-
-        }
+        console.log( "BaseStore.error", err );
+        this.err = err;
     }
 }
 

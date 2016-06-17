@@ -1,15 +1,16 @@
-import React        from 'react';
+import React          from 'react';
+import { withRouter } from 'react-router';
 
-import Menu         from 'components/Menu';
-import Layout       from 'components/layout';
-import LoginStore   from 'stores/LoginStore';
-import LoginActions from 'actions/LoginActions';
+import Menu           from 'components/Menu';
+import Layout         from 'components/layout';
+import LoginStore     from 'stores/LoginStore';
+import LoginActions   from 'actions/LoginActions';
 
 import { Card, CardTitle, CardText, CardActions, TextField, RaisedButton } from 'material-ui';
 
 const { Row, Col } = Layout;
 
-export default class Login extends React.Component {
+class Login extends React.Component {
     constructor(props) {
         super(props);
     }
@@ -23,7 +24,11 @@ export default class Login extends React.Component {
     }
 
     onChange = ( store ) => {
-        console.log("Login change", store._currentStatus );
+        if ( store.is( LoginActions.LOGIN ) ) {
+            this.props.router.push('home');
+        } else if ( store.is( LoginActions.ERROR ) ) {
+            console.log( "Login error", store.err );
+        }
     }
 
     _handleSubmit = () => {
@@ -62,3 +67,5 @@ export default class Login extends React.Component {
         </Row>);
     }
 }
+
+export default withRouter( Login );

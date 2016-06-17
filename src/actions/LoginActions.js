@@ -5,8 +5,9 @@ import BaseActions from 'actions/BaseActions';
 class LoginActions extends BaseActions {
 
     login(credentials) {
-        console.log("LoginActions", credentials);
-        return dispatch => Api.login(credentials).then(dispatch).catch(this.error);
+        return dispatch => Api.login(credentials).then(dispatch, err => {
+            console.log( "Login error", err );
+        });
     }
 
     logout() {
