@@ -1,6 +1,6 @@
 import Alt           from 'utils/alt'
 import BrandsActions from 'actions/BrandsActions'
-import CRUDStore     from './CRUDStore'
+import CRUDStore     from 'stores/CRUDStore'
 
 class BrandsStore extends CRUDStore {
 

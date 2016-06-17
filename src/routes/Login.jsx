@@ -1,17 +1,29 @@
-import React from 'react';
+import React        from 'react';
 
-import Menu from 'components/Menu';
-import Layout from 'components/layout';
+import Menu         from 'components/Menu';
+import Layout       from 'components/layout';
+import LoginStore   from 'stores/LoginStore';
+import LoginActions from 'actions/LoginActions';
 
-import { Card, CardTitle, CardText, TextField, RaisedButton } from 'material-ui';
+import { Card, CardTitle, CardText, CardActions, TextField, RaisedButton } from 'material-ui';
 
 const { Row, Col } = Layout;
-
-import api from 'utils/api';
 
 export default class Login extends React.Component {
     constructor(props) {
         super(props);
+    }
+
+    componentDidMount = () => {
+        LoginStore.listen( this.onChange );
+    }
+
+    componentWillUnmount = () => {
+        LoginStore.unlisten( this.onChange );
+    }
+
+    onChange = ( store ) => {
+        console.log("Login change", store._currentStatus );
     }
 
     _handleSubmit = () => {
@@ -23,11 +35,13 @@ export default class Login extends React.Component {
         if ( user.length && pass.length ) {
             //Call API to validate
 
-            api.login({ username: user, password: pass}).then(data => {
-                console.log('Logado', data);
-            }).catch( error => {
-                console.log('Login error', error);
-            })
+            LoginActions.login({ username: user, password: pass});
+
+            // api.login({ username: user, password: pass}).then(data => {
+            //     console.log('Logado', data);
+            // }).catch( error => {
+            //     console.log('Login error', error);
+            // })
         }
     }
 
@@ -39,9 +53,10 @@ export default class Login extends React.Component {
                     <CardText>
                         <TextField ref="username" floatingLabelText="Username" fullWidth={true} autoFocus={true} />
                         <TextField ref="password" floatingLabelText="Password" type="password" fullWidth={true} />
-
-                        <RaisedButton label="Enter" primary={true} onTouchTap={ this._handleSubmit } />
                     </CardText>
+                    <CardActions className="end-xs">
+                        <RaisedButton label="Entrar" secondary={true} onTouchTap={ this._handleSubmit } />
+                    </CardActions>
                 </Card>
             </Col>
         </Row>);

@@ -1,4 +1,4 @@
-import BaseActions from './BaseActions'
+import BaseActions from 'actions/BaseActions'
 
 class CRUDActions extends BaseActions {
 

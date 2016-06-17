@@ -1,13 +1,9 @@
-/* istanbul ignore next */
 import alt from 'utils/alt';
 
 class BaseStore {
 
     constructor(actions) {
 
-        if (!actions && NODE_ENV === 'development') {
-            console.warn("DEPRECATED: BaseStore must have actions parameter\n Look at " + this.displayName);
-        }
         // This is the transient state for caching lists.
         // Our read method that Views will call or chunck data cache.
         // initially designed to be used with pagination

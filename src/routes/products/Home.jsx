@@ -50,7 +50,6 @@ class ProductsHome extends React.Component {
                             <TableRow>
                                 <TableHeaderColumn>ID</TableHeaderColumn>
                                 <TableHeaderColumn>Nome</TableHeaderColumn>
-                                <TableHeaderColumn>Marca</TableHeaderColumn>
                             </TableRow>
                         </TableHeader>
                         <TableBody
@@ -61,7 +60,6 @@ class ProductsHome extends React.Component {
                                 return (<TableRow key={i}>
                                 <TableRowColumn>{ p.id }</TableRowColumn>
                                 <TableRowColumn>{ p.name }</TableRowColumn>
-                                <TableRowColumn>{ p.brandId }</TableRowColumn>
                             </TableRow>)
                             }) }
                         </TableBody>

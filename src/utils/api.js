@@ -1,8 +1,7 @@
 import Fenix from 'fenixjs';
+import Auth from 'utils/auth';
 
 const url = "http://localhost:3040";
-
-let xAuthToken = "";
 
 const defaults = {
     requestHeaders: {
@@ -16,7 +15,17 @@ const config = {
         options: {
             responseHeaders: {
                 set "X-AUTH-TOKEN" (token) {
-                    xAuthToken = token;
+                    Auth.setToken(token);
+                }
+            }
+        }
+    },
+    logout: {
+        methods: 'POST',
+        options: {
+            requestHeaders: {
+                get "X-AUTH-TOKEN" () {
+                    Auth.getToken();
                 }
             }
         }
@@ -26,7 +35,7 @@ const config = {
         options: {
             requestHeaders: {
                 get "X-AUTH-TOKEN" (){
-                    return xAuthToken;
+                    Auth.getToken();
                 }
             }
         }
@@ -36,7 +45,7 @@ const config = {
         options: {
             requestHeaders: {
                 get "X-AUTH-TOKEN" (){
-                    return xAuthToken;
+                    Auth.getToken();
                 }
             }
         }
