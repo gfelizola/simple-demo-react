@@ -1,5 +1,7 @@
-import React    from 'react';
+import React          from 'react';
 import { withRouter } from 'react-router';
+
+import Auth           from 'utils/auth';
 
 import { AppBar, Drawer, IconButton, IconMenu, MenuItem } from 'material-ui';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
@@ -10,27 +12,31 @@ class Menu extends React.Component {
         this.state = {open: false};
     }
 
-    handleToggle = () => this.setState({open: !this.state.open});
-    handleClose  = () => this.setState({open: false});
+    _handleToggle = () => this.setState({open: !this.state.open});
 
-    handleMenuItem = path => {
+    _handleMenuItem = path => {
         this.setState({open: false}, () => {
             this.props.router.push(path)
         });
+    }
+
+    _handleLogout = path => {
+        Auth.removeToken();
+        this.props.router.push('/login');
     }
 
     render() {
         return (<div>
             <AppBar
                 title="Meu App React"
-                onLeftIconButtonTouchTap={this.handleToggle}
+                onLeftIconButtonTouchTap={this._handleToggle}
                 iconElementRight={<IconMenu
                     iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}
                     targetOrigin={{horizontal: 'right', vertical: 'top'}}
                     anchorOrigin={{horizontal: 'right', vertical: 'top'}}
                   >
                     <MenuItem primaryText="Help" />
-                    <MenuItem primaryText="Sign out" />
+                    <MenuItem primaryText="Logout" onTouchTap={ this._handleLogout } />
                   </IconMenu>
                 }
             />
@@ -38,10 +44,9 @@ class Menu extends React.Component {
             <Drawer
                 open={this.state.open}
                 docked={false}
-                onRequestChange={this.handleToggle.bind(this, false)}>
-                <MenuItem onTouchTap={ this.handleMenuItem.bind(this, 'home') }>Home</MenuItem>
-                <MenuItem onTouchTap={ this.handleMenuItem.bind(this, 'login') }>Login</MenuItem>
-                <MenuItem onTouchTap={ this.handleMenuItem.bind(this, 'products') }>Produtos</MenuItem>
+                onRequestChange={this._handleToggle.bind(this, false)}>
+                <MenuItem onTouchTap={ this._handleMenuItem.bind(this, 'home') }>Home</MenuItem>
+                <MenuItem onTouchTap={ this._handleMenuItem.bind(this, 'products') }>Produtos</MenuItem>
             </Drawer>
         </div>)
     }

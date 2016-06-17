@@ -36,8 +36,8 @@ class CRUDStore extends BaseStore {
         let entName = this._entName;
         let entNamePlural = this._entNamePlural;
 
-        if( Array.isArray(payload.data) ) {
-            this[entNamePlural] = _.clone(payload.data);
+        if( Array.isArray(payload) ) {
+            this[entNamePlural] = _.clone(payload);
         } else {
             this[entName] = payload;
         }
@@ -71,6 +71,7 @@ class CRUDStore extends BaseStore {
         let index = _.findIndex( this[entNamePlural], ['id', ent.id]);
 
         if ( index >= 0 ) {
+            this[entName] = {};
             this[entNamePlural].splice(index, 1);
         }
     }

@@ -1,15 +1,17 @@
-import React          from 'react';
-import { withRouter } from 'react-router';
+import React                from 'react';
+import { withRouter, Link } from 'react-router';
 
-import Layout         from 'components/layout';
+import Layout               from 'components/layout';
+import ProductsStore        from 'stores/ProductsStore';
+import ProductsActions      from 'actions/ProductsActions';
+
+import AddIcon              from 'material-ui/svg-icons/content/add';
+import EditIcon             from 'material-ui/svg-icons/image/edit';
+import DelIcon              from 'material-ui/svg-icons/action/delete';
+import { Card, CardTitle, FloatingActionButton, IconButton, Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui';
+import { grey700, red400 } from 'material-ui/styles/colors';
+
 const { Row, Col }    = Layout;
-
-import { Card, CardTitle, FloatingActionButton, Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui';
-import ContentAdd      from 'material-ui/svg-icons/content/add';
-
-import ProductsStore   from 'stores/ProductsStore';
-import ProductsActions from 'actions/ProductsActions';
-
 
 class ProductsHome extends React.Component {
     constructor(props) {
@@ -20,12 +22,16 @@ class ProductsHome extends React.Component {
     }
 
     componentDidMount = () => {
-        ProductsStore.listen( this.onChange )
-        ProductsActions.read();
+        ProductsStore.listen( this.onChange );
+        ProductsActions.read('?_expand=brand');
+    }
+
+    componentWillUnmount = () => {
+        ProductsStore.unlisten( this.onChange );
     }
 
     onChange = store => {
-        if ( store.is( ProductsActions.READ ) ) {
+        if ( store.is([ ProductsActions.READ, ProductsActions.DELETE ]) ) {
             this.setState({
                 products: store.products
             });
@@ -36,8 +42,17 @@ class ProductsHome extends React.Component {
         this.props.router.push("/products/new");
     }
 
+    _handleEdit = ( product, event ) => {
+        this.props.router.push("/products/edit/" + product.id);
+    }
+
+    _handleDelete = ( product, event ) => {
+        // this.props.router.push("/products/new");
+        ProductsActions.delete( product );
+    }
+
     render() {
-        let showCheckboxes = true;
+        let showCheckboxes = false;
 
         return (<Row hAlign="center-xs">
             <Col sm={8}>
@@ -50,6 +65,8 @@ class ProductsHome extends React.Component {
                             <TableRow>
                                 <TableHeaderColumn>ID</TableHeaderColumn>
                                 <TableHeaderColumn>Nome</TableHeaderColumn>
+                                <TableHeaderColumn>Marca</TableHeaderColumn>
+                                <TableHeaderColumn>Ações</TableHeaderColumn>
                             </TableRow>
                         </TableHeader>
                         <TableBody
@@ -60,6 +77,11 @@ class ProductsHome extends React.Component {
                                 return (<TableRow key={i}>
                                 <TableRowColumn>{ p.id }</TableRowColumn>
                                 <TableRowColumn>{ p.name }</TableRowColumn>
+                                <TableRowColumn>{ p.brand ? p.brand.name : '-' }</TableRowColumn>
+                                <TableRowColumn>
+                                    <IconButton onTouchTap={ this._handleEdit.bind( this, p ) }><EditIcon color={ grey700 } /></IconButton>
+                                    <IconButton onTouchTap={ this._handleDelete.bind( this, p ) }><DelIcon color={ grey700 } hoverColor={ red400 } /></IconButton>
+                                </TableRowColumn>
                             </TableRow>)
                             }) }
                         </TableBody>
@@ -67,7 +89,7 @@ class ProductsHome extends React.Component {
                 </Card>
 
                 <FloatingActionButton secondary={true} style={{position:'fixed', bottom:16, right:16}} onTouchTap={ this._handleAdd }>
-                  <ContentAdd />
+                  <AddIcon />
                 </FloatingActionButton>
             </Col>
         </Row>);

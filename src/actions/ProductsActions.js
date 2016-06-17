@@ -1,11 +1,12 @@
 import Alt         from 'utils/alt';
-import Api         from 'utils/api';
+import Auth        from 'utils/auth';
+import RestClient  from 'utils/api';
 import CRUDActions from 'actions/CRUDActions';
 
 class ProductsActions extends CRUDActions {
 
     constructor() {
-        super(Api.products);
+        super('products');
     }
 
 }

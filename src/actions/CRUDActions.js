@@ -1,15 +1,14 @@
-import BaseActions from 'actions/BaseActions'
+import RestClient  from 'utils/api';
+import BaseActions from 'actions/BaseActions';
 
 class CRUDActions extends BaseActions {
 
-    constructor(resource) {
-
+    constructor(res) {
         super();
 
-        if (!resource) {
-            throw "Resource undefined.";
-        }
-        this.resource = resource;
+        if (!res) throw "Resource undefined.";
+
+        this.resource = res;
 
         this.generateActions('new');
     }
@@ -29,8 +28,10 @@ class CRUDActions extends BaseActions {
         let loadingID = this.loading.defer();
 
         return new Promise((resolve, reject) => {
-            let func = method == 'get' ? id ? this.resource(id) : this.resource : this.resource[method] ;
-            func(body)
+            let res = RestClient(this.resource);
+            if ( id ) res = res(id);
+
+            res[method](body)
                 .then(payload => {
                     clearTimeout(loadingID);
                     resolve(payload);
@@ -45,11 +46,11 @@ class CRUDActions extends BaseActions {
         return dispatch => this._fetch('post', ent).then(dispatch).catch(this.error);
     }
 
-    read(id) {
+    read(query) {
         return dispatch => {
             this.new.defer();
-            if (typeof id == 'number' || typeof id == 'string') {
-                this._fetch('get', id).then(dispatch).catch(this.error);
+            if (typeof query == 'number' || typeof query == 'string') {
+                this._fetch('get', query).then(dispatch).catch(this.error);
             } else {
                 this._fetch('get').then(dispatch).catch(this.error);
             }
@@ -61,7 +62,11 @@ class CRUDActions extends BaseActions {
     }
 
     delete(ent) {
-        return dispatch => this._fetch('put', ent.id, ent).then(dispatch).catch(this.error);
+        return dispatch => this._fetch('delete', ent.id, ent)
+            .then(() => {
+                dispatch( {id: ent.id } )
+            })
+            .catch(this.error);
     }
 }
 

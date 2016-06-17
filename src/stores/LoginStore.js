@@ -6,7 +6,7 @@ import LoginActions from 'actions/LoginActions';
 class LoginStore extends BaseStore {
 
     constructor() {
-        super();
+        super( LoginActions );
 
         this.user = {};
         this.bindListeners({

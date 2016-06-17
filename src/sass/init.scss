@@ -13,3 +13,11 @@ body {
     padding-top: $space * 2;
     padding-bottom: $space * 2;
 }
+
+.error {
+    display: block;
+    padding: 4px;
+    color: #fff;
+    border: 1px solid #F00;
+    background: lighten( #f00, 30% );
+}

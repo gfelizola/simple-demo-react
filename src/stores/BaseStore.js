@@ -9,8 +9,8 @@ class BaseStore {
         // initially designed to be used with pagination
         this._lastStatus    = null;
         this._currentStatus = null;
-        this.err            = {};
         this._action        = actions;
+        this.err            = {};
 
         this.on('beforeEach', (data) => {
             if (!this.actionListeners[data.payload.action]) {
@@ -72,23 +72,36 @@ class BaseStore {
             this.bindAction(actions.ERROR, this.error);
 
         } catch(e) {
-
         }
     }
 
     loading() {}
 
-    _dispatchError(err) {
-        this.setState({err});
-    }
-
-    _connectionErrorCallback(){
-        window.location.reload();
-    }
-
     error(err) {
-        console.log( "BaseStore.error", err );
         this.err = err;
+        if (err.message) {
+            if (err.response) {
+
+                // Prevent multiple error handles for same response
+                if (!err.response.isRead) {
+                    err.response.isRead = true;
+                    err.response.json().then(respErr => {
+                        let errors = respErr.errors;
+                        if (respErr.errors) {
+                            errors.map(e => this.err = e);
+                        } else {
+                            err.message = respErr.message ? respErr.message : err.message;
+                            this.err = err;
+                        }
+                    });
+                }
+
+            } else {
+                this.err = err;
+            }
+        } else {
+            this.err = { message: 'Ocorreu um erro inesperado' };
+        }
     }
 }
 

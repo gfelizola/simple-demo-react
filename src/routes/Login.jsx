@@ -6,13 +6,18 @@ import Layout         from 'components/layout';
 import LoginStore     from 'stores/LoginStore';
 import LoginActions   from 'actions/LoginActions';
 
-import { Card, CardTitle, CardText, CardActions, TextField, RaisedButton } from 'material-ui';
+import { Card, CardTitle, CardText, CardActions, TextField, RaisedButton, Snackbar } from 'material-ui';
 
 const { Row, Col } = Layout;
 
 class Login extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            error: "",
+            snackOpen: false,
+            snackMessage: ""
+        }
     }
 
     componentDidMount = () => {
@@ -25,9 +30,19 @@ class Login extends React.Component {
 
     onChange = ( store ) => {
         if ( store.is( LoginActions.LOGIN ) ) {
-            this.props.router.push('home');
-        } else if ( store.is( LoginActions.ERROR ) ) {
-            console.log( "Login error", store.err );
+            const { location } = this.props;
+
+            if (location.state && location.state.nextPathname) {
+                this.props.router.replace(location.state.nextPathname)
+            } else {
+                this.props.router.replace('/')
+            }
+
+        } else if ( store.is( LoginActions.ERROR ) && store.err.response.status == 401 ) {
+            this.setState({
+                snackOpen: true,
+                snackMessage: "Usuário ou senha inválidos"
+            });
         }
     }
 
@@ -38,17 +53,13 @@ class Login extends React.Component {
         let pass = password.getValue();
 
         if ( user.length && pass.length ) {
-            //Call API to validate
-
             LoginActions.login({ username: user, password: pass});
-
-            // api.login({ username: user, password: pass}).then(data => {
-            //     console.log('Logado', data);
-            // }).catch( error => {
-            //     console.log('Login error', error);
-            // })
         }
     }
+
+    _handleRequestClose = () => {
+        this.setState({ snackOpen: false });
+    };
 
     render() {
         return (<Row hAlign="center-xs">
@@ -64,6 +75,12 @@ class Login extends React.Component {
                     </CardActions>
                 </Card>
             </Col>
+            <Snackbar
+                open={ this.state.snackOpen }
+                message={ this.state.snackMessage }
+                autoHideDuration={5000}
+                onRequestClose={ this._handleRequestClose }
+            />
         </Row>);
     }
 }

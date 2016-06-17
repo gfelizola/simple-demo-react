@@ -13,7 +13,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "alt": "^0.18.4",
+    "alt": "^0.18.1",
     "cookie_js": "^1.2.0",
     "fetchival-express": "^0.3.5",
     "flexboxgrid": "^6.3.0",

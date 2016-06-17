@@ -5,7 +5,7 @@ import CRUDActions from 'actions/CRUDActions'
 class BrandsActions extends CRUDActions {
 
     constructor() {
-        super(Api.brands);
+        super('brands');
     }
 
 }
