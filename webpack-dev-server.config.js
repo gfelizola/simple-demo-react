@@ -20,7 +20,6 @@ var config = {
         'webpack-dev-server/client?http://localhost:4000',
         'webpack/hot/only-dev-server',
         path.join(__dirname, '/src/app.jsx'),
-        path.join(__dirname, '/src/sass/init.scss'),
     ],
     //Config options on how to interpret requires imports
     resolve: {
