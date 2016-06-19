@@ -9,7 +9,6 @@ class LoginActions extends BaseActions {
         return dispatch => Api('login', {responseAs:"response"})
             .post(credentials)
             .then(response => {
-                console.log( response );
                 let token = response.headers.get('x-auth-token');
                 Auth.setToken(token);
 
