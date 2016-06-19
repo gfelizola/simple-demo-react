@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Link } from 'react-router';
 
-export default class Main extends React.Component {
+export default class Page1 extends React.Component {
     constructor(props) {
         super(props);
     }
@@ -10,8 +10,9 @@ export default class Main extends React.Component {
     render() {
         return (
             <div className="row center-xs">
-                <h1>Home</h1>
-                <Link to="/other">Go to other page</Link>
+                <h1>Other page</h1>
+
+                <Link to="/">Back to home</Link>
             </div>
         );
     }

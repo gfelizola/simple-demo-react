@@ -13,7 +13,6 @@ export default class Main extends React.Component {
         return (
             <MuiThemeProvider muiTheme={getMuiTheme()}>
                 <div>
-                    <Menu />
                     <div className="app-container container-fluid">
                         { this.props.children }
                     </div>
