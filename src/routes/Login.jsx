@@ -20,6 +20,8 @@ class Login extends React.Component {
         }
     }
 
+    /*===== SNIPPET STORE =====*/
+
     componentDidMount = () => {
         LoginStore.listen( this.onChange );
     }
@@ -46,6 +48,8 @@ class Login extends React.Component {
         }
     }
 
+    /*===== SNIPPET STORE =====*/
+
     _handleSubmit = () => {
         let { username, password } = this.refs;
 
@@ -53,7 +57,7 @@ class Login extends React.Component {
         let pass = password.getValue();
 
         if ( user.length && pass.length ) {
-            LoginActions.login({ username: user, password: pass});
+            console.log("TUDO OK PARA FAZER LOGIN");
         }
     }
 
