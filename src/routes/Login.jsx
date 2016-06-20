@@ -1,3 +1,11 @@
+/*
+p4-imports
+p4-class
+p4-render
+p4-stores
+p4-functions
+*/
+
 import React          from 'react';
 import { withRouter } from 'react-router';
 
@@ -19,8 +27,6 @@ class Login extends React.Component {
             snackMessage: ""
         }
     }
-
-    /*===== SNIPPET STORE =====*/
 
     componentDidMount = () => {
         LoginStore.listen( this.onChange );
@@ -48,8 +54,6 @@ class Login extends React.Component {
         }
     }
 
-    /*===== SNIPPET STORE =====*/
-
     _handleSubmit = () => {
         let { username, password } = this.refs;
 
@@ -57,7 +61,7 @@ class Login extends React.Component {
         let pass = password.getValue();
 
         if ( user.length && pass.length ) {
-            console.log("TUDO OK PARA FAZER LOGIN");
+            LoginActions.login({username: user, password: pass});
         }
     }
 
@@ -66,26 +70,28 @@ class Login extends React.Component {
     };
 
     render() {
-        return (<Row hAlign="center-xs">
-            <Col sm={4}>
-                <Card className="start-xs">
-                    <CardTitle title="login" />
-                    <CardText>
-                        <TextField ref="username" floatingLabelText="Username" fullWidth={true} autoFocus={true} />
-                        <TextField ref="password" floatingLabelText="Password" type="password" fullWidth={true} />
-                    </CardText>
-                    <CardActions className="end-xs">
-                        <RaisedButton label="Entrar" secondary={true} onTouchTap={ this._handleSubmit } />
-                    </CardActions>
-                </Card>
-            </Col>
-            <Snackbar
-                open={ this.state.snackOpen }
-                message={ this.state.snackMessage }
-                autoHideDuration={5000}
-                onRequestClose={ this._handleRequestClose }
-            />
-        </Row>);
+        return (
+            <Row hAlign="center-xs">
+                <Col sm={4}>
+                    <Card className="start-xs">
+                        <CardTitle title="login" />
+                        <CardText>
+                            <TextField ref="username" floatingLabelText="Username" fullWidth={true} autoFocus={true} />
+                            <TextField ref="password" floatingLabelText="Password" type="password" fullWidth={true} />
+                        </CardText>
+                        <CardActions className="end-xs">
+                            <RaisedButton label="Entrar" secondary={true} onTouchTap={ this._handleSubmit } />
+                        </CardActions>
+                    </Card>
+                </Col>
+                <Snackbar
+                    open={ this.state.snackOpen }
+                    message={ this.state.snackMessage }
+                    autoHideDuration={5000}
+                    onRequestClose={ this._handleRequestClose }
+                />
+            </Row>
+        );
     }
 }
 
