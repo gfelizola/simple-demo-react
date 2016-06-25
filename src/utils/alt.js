@@ -1,6 +1,8 @@
+'use strict';
+
 import Alt from 'alt';
 
-let alt = new Alt();
+const alt = new Alt();
 Alt.debug('alt', alt);
 
 export default alt;
