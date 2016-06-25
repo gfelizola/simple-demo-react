@@ -1,5 +1,7 @@
-import Fetchival from 'fetchival-express';
+'use strict';
 
-const url = "http://localhost:3040";
+import fetchival from 'fetchival-express';
 
-export default Fetchival( url );
+const url = 'http://127.0.0.1:3040';
+
+export default fetchival(url);

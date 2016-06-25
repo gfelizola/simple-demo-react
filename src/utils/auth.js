@@ -1,30 +1,27 @@
-import Cookie from 'utils/cookie';
-
-Cookie.defaults.expires = 10;
-Cookie.defaults.secure  = false;
+'use strict';
 
 export default {
-    isAuthenticated() {
-        return this.getToken() !== undefined;
-    },
+	isAuthenticated() {
+		return this.getToken() !== undefined;
+	},
 
-    getToken() {
-        return Cookie.get('token');
-    },
+	getToken() {
+		return localStorage.getItem('token');
+	},
 
-    setToken(token) {
-        Cookie.set('token', token);
-    },
+	setToken(token) {
+		localStorage.setItem('token', token);
+	},
 
-    removeToken() {
-        Cookie.remove('token');
-    },
+	removeToken() {
+		localStorage.removeItem('token');
+	},
 
-    getLogin() {
-        return Cookie.get('login');
-    },
+	getLogin() {
+		return localStorage.getItem('login');
+	},
 
-    setLogin(login) {
-        Cookie.set('login', login);
-    },
-}
+	setLogin(login) {
+		localStorage.setItem('login', login);
+	}
+};
